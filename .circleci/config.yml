@@ -13,7 +13,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: package.json-branch-{{ checksum "package.json" }}
+          key: dependencies_{{ checksum "package.json" }}
 
       - run:
           name: NPM Install
@@ -22,13 +22,9 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: package.json-branch-{{ checksum "package.json" }}
+          key: dependencies_{{ checksum "package.json" }}
 
-
-  checkout_from_github:
-    name: Checkout From Github
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - checkout
+      - run:
+          name: Run Linter (eslint)
+          command: ./node_modules/eslint/bin/eslint.js ./
 
