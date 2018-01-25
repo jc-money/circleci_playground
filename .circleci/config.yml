@@ -15,7 +15,9 @@ jobs:
       - restore_cache:
           key: package.json-branch-{{ checksum "package.json" }}
 
-      - run: npm install
+      - run:
+          name: NPM Install
+          command: npm install
 
       - save_cache:
           paths:
