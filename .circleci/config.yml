@@ -36,5 +36,5 @@ jobs:
 
       - run:
           name: Docker login to QUAY
-          command: docker login -e "${DOCKER_EMAIL}" -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}" quay.io
+          command: docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}" quay.io
 
