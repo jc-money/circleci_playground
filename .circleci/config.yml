@@ -10,7 +10,10 @@ jobs:
   run_linter:
     name: 'Run linter (eslint)'
     requires: checkout
-    command: ./node_modules/eslint/bin/eslint.js ./
+    steps:
+      - run:
+        name: run_linter
+        command: ./node_modules/eslint/bin/eslint.js ./
 
   install_npm_packages:
     name: 'Install npm packages'
