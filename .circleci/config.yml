@@ -25,9 +25,15 @@ jobs:
           key: dependencies_{{ checksum "package.json" }}
 
       - run:
-          name: Versions
+          name: Docker Version
           command: docker --version
-          command: ndoe --version
+
+      - run:
+          name: Node Version
+          command: node --version
+
+      - run:
+          name: NPM Version
           command: npm --version
 
       - run:
