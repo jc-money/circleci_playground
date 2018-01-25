@@ -26,5 +26,11 @@ jobs:
 
       - run:
           name: Run Linter (eslint)
+          # command: npm run list
           command: ./node_modules/eslint/bin/eslint.js ./
+
+      - run:
+          name: Run Unit Tests
+          command: "ENVIRONMENT=dev LOGZIO_TOKEN=YBJpcTjcrpLOBpsmGxunSyBdQMIBAfwC mocha --colors --recursive ./test/unit_test"
+          # command: npm run test
 
