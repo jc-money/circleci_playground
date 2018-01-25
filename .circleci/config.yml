@@ -8,15 +8,6 @@ jobs:
     steps:
       - checkout
           
-  run_linter:
-    name: 'Run linter (eslint)'
-    machine: true
-    requires: checkout
-    steps:
-      - run:
-        name: run_linter
-        command: ./node_modules/eslint/bin/eslint.js ./
-
   install_npm_packages:
     name: 'Install npm packages'
     machine: true
@@ -34,6 +25,15 @@ jobs:
           paths:
             - ./node_modules
 
+  run_linter:
+    name: 'Run linter (eslint)'
+    machine: true
+    requires: install_npm_packages
+    steps:
+      - run:
+        name: run_linter
+        command: ./node_modules/eslint/bin/eslint.js ./
+
   run_unit_tests:
     name: 'Run Unit Tests'
     machine: true
@@ -47,6 +47,9 @@ workflows:
 
   build_test_catalog_deploy:
     jobs:
+      - checkout
+      - install_npm_packages
+      - runt_linter
       - run_unit_tests
 
 
