@@ -4,6 +4,7 @@ jobs:
 
   checkout:
     name: Checkout ???
+    machine: true
     steps:
       - checkout
           
