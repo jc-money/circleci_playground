@@ -10,6 +10,7 @@ jobs:
           
   run_linter:
     name: 'Run linter (eslint)'
+    machine: true
     requires: checkout
     steps:
       - run:
@@ -18,6 +19,7 @@ jobs:
 
   install_npm_packages:
     name: 'Install npm packages'
+    machine: true
     requires: checkout
     steps:
       - restore_cache:
@@ -34,6 +36,7 @@ jobs:
 
   run_unit_tests:
     name: 'Run Unit Tests'
+    machine: true
     requires: install_npm_packages
     steps:
       - run:
