@@ -25,6 +25,13 @@ jobs:
           key: dependencies_{{ checksum "package.json" }}
 
       - run:
+          name: Versions
+          command:
+            - docker --version
+            - ndoe --version
+            - npm --version
+
+      - run:
           name: Run Linter
           # command: npm run list
           command: ./node_modules/eslint/bin/eslint.js ./
