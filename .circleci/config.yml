@@ -26,7 +26,7 @@ jobs:
 
       - run:
           name: Versions
-          command:
+          commands:
             - docker --version
             - ndoe --version
             - npm --version
