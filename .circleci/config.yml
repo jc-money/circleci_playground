@@ -1,0 +1,45 @@
+version: 2
+
+jobs:
+
+  checkout:
+    name: Checkout ???
+    steps:
+      - checkout
+          
+  run_linter:
+    name: 'Run linter (eslint)'
+    requires: checkout
+    command: ./node_modules/eslint/bin/eslint.js ./
+
+  install_npm_packages:
+    name: 'Install npm packages'
+    requires: checkout
+    steps:
+      - restore_cache:
+          key: `branch-???-{{ checksum "package.json" }}
+
+      - run:
+          name: 'npm install'
+          command: npm install
+
+      - save_cache:
+          key: `branch-???-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+  run_unit_tests:
+    name: 'Run Unit Tests'
+    requires: install_npm_packages
+    steps:
+      - run:
+          command: 'LOGZIO_TOKEN=NOT_A_VALID_TOKEN ./node_modules/mocha/bin/mocha --colors ./test/unit-test/'
+
+workflows:
+  version: 2
+
+  build_test_catalog_deploy:
+    jobs:
+      - run_unit_tests
+
+
