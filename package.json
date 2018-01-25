@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "eslint": "4.6.1",
     "mocha": "3.5.0"
   }
 }
