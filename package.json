@@ -1,0 +1,8 @@
+{
+  "name": "circleci-playground",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "mocha": "3.5.0"
+  }
+}
