@@ -26,10 +26,9 @@ jobs:
 
       - run:
           name: Versions
-          commands:
-            - docker --version
-            - ndoe --version
-            - npm --version
+          command: docker --version
+          command: ndoe --version
+          command: npm --version
 
       - run:
           name: Run Linter
