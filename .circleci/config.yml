@@ -31,6 +31,6 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: "ENVIRONMENT=dev LOGZIO_TOKEN=YBJpcTjcrpLOBpsmGxunSyBdQMIBAfwC mocha --colors --recursive ./test/unit_test"
           # command: npm run test
+          command: ./node_modules/mocha/bin/mocha --colors ./test/unit-test/
 
