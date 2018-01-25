@@ -2,6 +2,27 @@ version: 2
 
 jobs:
 
+  build:
+
+    docker:
+      - image: circleci/node:latest
+
+    working_directory: ~/work
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: package.json-branch-{{ checksum "package.json" }}
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: package.json-branch-{{ checksum "package.json" }}
+
+
   checkout_from_github:
     name: Checkout From Github
     docker:
