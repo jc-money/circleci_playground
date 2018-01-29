@@ -51,9 +51,6 @@ jobs:
 
       - run:
           name: Docker login to QUAY
-          command: echo "${DOCKER_PASSWORD} / ${DOCKER_USER}"
-
-      - run:
-          name: Docker login to QUAY
-          command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
+          # command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
+          command: docker login --username "${DOCKER_USER}" --password "${DOCKER_PASSWORD}" quay.io
 
