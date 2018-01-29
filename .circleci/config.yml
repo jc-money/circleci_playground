@@ -60,6 +60,9 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: dependencies_{{ checksum "package.json" }}
+
       - run:
           name: Run Unit Tests
           # command: npm run test
