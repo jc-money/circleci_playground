@@ -47,10 +47,6 @@ jobs:
           # command: npm run list
           command: npx eslint ./
 
-      - run:
-          name: Docker login to QUAY
-          command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
-
       - persist_to_workspace:
           root: .
           paths:
@@ -72,13 +68,27 @@ jobs:
             branches:
               only: test
 
+
+  build_and_catalog_docker_image:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Docker login to QUAY
+          command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
+
           
 workflows:
   version: 2
 
-  build_test_catalog_deploy:
+  handle_test_branch:
     jobs:
+
       - build
+
       - run_unit_tests:
           requires:
             - build
@@ -86,4 +96,9 @@ workflows:
             branches:
               only: test
 
-
+      - build_and_catalog_docker_image:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only: test
