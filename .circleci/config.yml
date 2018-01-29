@@ -45,13 +45,19 @@ jobs:
           command: npx eslint ./
 
       - run:
+          name: Docker login to QUAY
+          command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
+
+  test:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/work
+
+    steps:
+      - run:
           name: Run Unit Tests
           # command: npm run test
           command: npx mocha --colors ./test/unit-test/
-
-      - run:
-          name: Docker login to QUAY
-          command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
 
 workflows:
