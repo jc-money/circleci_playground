@@ -85,11 +85,11 @@ jobs:
       - run:
           name: "Harbor: Get image name using harbor-deploy"
           command: >
-            echo docker run -v $(pwd):/data quay.io/turner/harbor-deploy set_build_values
-              --shipment="cnnmoney-stream-APP_NAME"
-              --token="THE_SHIPMENT_TOKEN"
-              --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-")
-              --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-")
+            echo docker run -v $(pwd):/data quay.io/turner/harbor-deploy set_build_values \
+              --shipment="cnnmoney-stream-APP_NAME" \
+              --token="THE_SHIPMENT_TOKEN" \
+              --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
+              --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --build_num="${CIRCLE_BUILD_NUM}" > image.props
 
       - run:
