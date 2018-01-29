@@ -58,7 +58,7 @@ jobs:
 
 
   run_unit_tests:
-    <<: *default
+    <<: *defaults
 
     steps:
       - attach_workspace:
