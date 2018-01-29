@@ -83,6 +83,10 @@ jobs:
           command: export
 
       - run:
+          name: "List Files (ls -l $(pwd))"
+          command: ls -l $(pwd)
+
+      - run:
           name: "Docker: Login to QUAY"
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
