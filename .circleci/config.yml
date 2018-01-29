@@ -51,10 +51,10 @@ jobs:
           name: Docker login to QUAY
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
-        - persist_to_workspace:
-            root: workspace
-            paths:
-              - /work
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - /work
 
 
   run_unit_tests:
