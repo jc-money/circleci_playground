@@ -52,7 +52,7 @@ jobs:
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
       - persist_to_workspace:
-          root: workspace
+          root: .
           paths:
             - .
 
