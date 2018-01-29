@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Run Linter
           # command: npm run list
-          command: npx eslint.js ./
+          command: npx eslint ./
 
       - run:
           name: Run Unit Tests
