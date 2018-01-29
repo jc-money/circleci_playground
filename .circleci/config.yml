@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: ~/work
+  working_directory: /work
   docker:
     - image: circleci/node:latest
 
@@ -54,7 +54,7 @@ jobs:
         - persist_to_workspace:
             root: workspace
             paths:
-              - ~/work
+              - /work
 
 
   run_unit_tests:
@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - attach_workspace:
-        at: .
+          at: /work
 
       - run:
           name: Run Unit Tests
