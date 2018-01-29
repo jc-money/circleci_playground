@@ -16,6 +16,7 @@ jobs:
       - checkout
 
       - restore_cache:
+          name: Restore Cache (./node_modules)
           key: dependencies_{{ checksum "package.json" }}
 
       - run:
@@ -23,6 +24,7 @@ jobs:
           command: npm install
 
       - save_cache:
+          name: Save Cache (./node_modules)
           paths:
             - node_modules
           key: dependencies_{{ checksum "package.json" }}
