@@ -90,7 +90,7 @@ jobs:
               --token="THE_SHIPMENT_TOKEN" \
               --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
-              --build_num="${CIRCLE_BUILD_NUM}" > image.props
+              --build_num="${CIRCLE_BUILD_NUM}"
 
       - run:
           name: Show Image Name
