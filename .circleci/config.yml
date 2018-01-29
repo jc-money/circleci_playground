@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Run Unit Tests
           # command: npm run test
-          command: npx mocha --colors ./test/unit-test/
+          command: npm test
           filters:
             branches:
               only: test
