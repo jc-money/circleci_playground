@@ -54,7 +54,7 @@ jobs:
       - persist_to_workspace:
           root: workspace
           paths:
-            - /work
+            - .
 
 
   run_unit_tests:
