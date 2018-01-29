@@ -1,14 +1,16 @@
+defaults: &defaults
+  working_directory: ~/work
+  docker:
+    - image: circleci/node:latest
+
+
 version: 2
 
 jobs:
 
 
   build:
-
-    docker:
-      - image: circleci/node:latest
-
-    working_directory: ~/work
+    <<: *defaults
 
     steps:
       - checkout
@@ -49,19 +51,18 @@ jobs:
           name: Docker login to QUAY
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
+        - persist_to_workspace:
+            root: workspace
+            paths:
+              - ~/work
+
 
   run_unit_tests:
-
-    docker:
-      - image: circleci/node:latest
-
-    working_directory: ~/work
+    <<: *default
 
     steps:
-      - checkout
-
-      - restore_cache:
-          key: dependencies_{{ checksum "package.json" }}
+      - attach_workspace:
+        at: .
 
       - run:
           name: Run Unit Tests
