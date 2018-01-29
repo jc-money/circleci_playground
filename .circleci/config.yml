@@ -79,6 +79,10 @@ jobs:
           docker_layer_caching: true
 
       - run:
+          name: "Export (show env vars)"
+          command: export
+
+      - run:
           name: "Docker: Login to QUAY"
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
 
