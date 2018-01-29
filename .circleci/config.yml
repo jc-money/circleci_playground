@@ -59,5 +59,6 @@ workflows:
   build-test-catalog-and-deploy:
     jobs:
       - build
+      - test
 
 
