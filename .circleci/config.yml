@@ -86,10 +86,7 @@ jobs:
           name: "Harbor: Get image name using harbor-deploy"
           command: >
             docker run -v $(pwd):/data quay.io/turner/harbor-deploy set_build_values \
-              --dir="/data" \
-              --shipment="cnnmoney-stream-APP_NAME" \
-              --token="THE_SHIPMENT_TOKEN" \
-              --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
+              --dir='/data' \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --build_num="${CIRCLE_BUILD_NUM}"
 
@@ -97,7 +94,15 @@ jobs:
           name: Show Image Name
           command: cat image.props
 
-          
+      - run:
+          name: "Harbor: Catalog the docker image (into QUAY)"
+          command: >
+            docker run -v $(pwd):/data quay.io/turner/harbor-deploy catalog \
+              --shipment="mss-${HARBOR_CONTAINER}" \
+              --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
+              --token="${SHIPMENT_BUILD_TOKEN"
+         
+
 workflows:
   version: 2
 
