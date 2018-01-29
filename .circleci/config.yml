@@ -39,12 +39,12 @@ jobs:
       - run:
           name: Run Linter
           # command: npm run list
-          command: ./node_modules/eslint/bin/eslint.js ./
+          command: nvx eslint.js ./
 
       - run:
           name: Run Unit Tests
           # command: npm run test
-          command: ./node_modules/mocha/bin/mocha --colors ./test/unit-test/
+          command: nvx mocha --colors ./test/unit-test/
 
       - run:
           name: Docker login to QUAY
