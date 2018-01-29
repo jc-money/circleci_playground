@@ -59,6 +59,12 @@ workflows:
   build-test-catalog-and-deploy:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+              - build
+          filters:
+            branches:
+              only: test
+
 
 
