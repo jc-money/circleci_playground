@@ -94,7 +94,6 @@ jobs:
           name: "Harbor: Get image name using harbor-deploy"
           command: >
             docker run -v $(pwd):/data quay.io/turner/harbor-deploy set_build_values \
-              --dir='/data' \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --build_num="${CIRCLE_BUILD_NUM}"
 
