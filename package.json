@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "chai": "4.1.2",
-    "eslint": "4.6.1",
+    "eslint": "latest",
     "mocha": "3.5.0"
   }
 }
