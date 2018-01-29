@@ -15,9 +15,6 @@ jobs:
     steps:
       - checkout
 
-      - setup_remote_docker:
-          docker_layer_caching: true
-
       - restore_cache:
           key: dependencies_{{ checksum "package.json" }}
 
@@ -76,9 +73,13 @@ jobs:
       - attach_workspace:
           at: .
 
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       - run:
           name: Docker login to QUAY
           command: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USER}" --password-stdin quay.io
+
 
           
 workflows:
