@@ -51,8 +51,7 @@ jobs:
 
       - run:
           name: Docker login to QUAY
-          command:
-            - echo "${DOCKER_PASSWORD} / ${DOCKER_USER}"
+          command: echo "${DOCKER_PASSWORD} / ${DOCKER_USER}"
 
       - run:
           name: Docker login to QUAY
