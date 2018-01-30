@@ -90,7 +90,6 @@ jobs:
             # copying config file into this volume
             docker cp ./package.json data:/data
             docker run --volumes-from data quay.io/turner/harbor-deploy set_build_values \
-              --dir="/data" \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --build_num="${CIRCLE_BUILD_NUM}" > image.props
 
@@ -103,7 +102,6 @@ jobs:
           name: "Docker: Build Docker Image"
           command: |
             source image.props
-            IMAGE=$(echo $IMAGE | tr "_" "-")
             docker build --rm=false -t "${IMAGE}" .
 
 
@@ -111,7 +109,6 @@ jobs:
           name: "Docker: Push Docker Image"
           command: |
             source image.props
-            IMAGE=$(echo $IMAGE | tr "_" "-")
             docker push "${IMAGE}"
 
 
