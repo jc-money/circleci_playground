@@ -82,7 +82,7 @@ jobs:
       - run:
           name: "Create harbor.props file"
           command: |
-            echo "" > harbor.props
+            echo "SHIPMENT=${DEFAULT_HARBOR_SHIPMENT}" > harbor.props
             case $CIRCLE_BRANCH in
               develop)
                 echo "HARBOR_ENV=dev" >> harbor.props
@@ -156,7 +156,7 @@ jobs:
             source image.props
             source harbor.props
             docker run --env-file image.props quay.io/turner/harbor-deploy catalog \
-              --shipment="cnn-cerebro-test" \
+              --shipment="${SHIPMENT}" \
               --environment="${HARBOR_ENV}" \
               --token="${BUILD_TOKEN}"
 
@@ -190,7 +190,7 @@ jobs:
             source image.props
             source harbor.props
             docker run --env-file image.props quay.io/turner/harbor-deploy deploy \
-              --shipment="cnn-cerebro-test" \
+              --shipment="${SHIPMENT}" \
               --environment="${HARBOR_ENV}" \
               --token="${BUILD_TOKEN}"
 
