@@ -84,8 +84,8 @@ jobs:
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_STAGING}" >> harbor.props
                 ;;
               test1)
-                echo "HARBOR_ENV=test1" >> harbor.props
-                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST1}" >> harbor.props
+                echo "HARBOR_ENV=private-jczuy" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_JCZUY}" >> harbor.props
                 ;;
             esac
                 
