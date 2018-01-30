@@ -16,30 +16,25 @@ jobs:
       - checkout
 
       - restore_cache:
-          name: Restore Cache (./node_modules)
+          name: "Restore Cache (./node_modules)"
           key: dependencies_{{ checksum "package.json" }}
 
       - run:
-          name: NPM Install
+          name: "NPM Install"
           command: npm install
 
       - save_cache:
-          name: Save Cache (./node_modules)
+          name: "Save Cache (./node_modules)"
           paths:
             - node_modules
           key: dependencies_{{ checksum "package.json" }}
 
       - run:
-          name: Docker Version
-          command: docker --version
-
-      - run:
-          name: Node Version
-          command: node --version
-
-      - run:
-          name: NPM Version
-          command: npm --version
+          name: "Show Tool Versions"
+          command: |
+            docker --version
+            echo "Node version: $(node --version)"
+            echo "NPM version: $(npm --version)"
 
       - run:
           name: Run Linter
@@ -104,7 +99,7 @@ jobs:
               --build_num="${CIRCLE_BUILD_NUM}" > image.props
 
       - run:
-          name: Show Image Name
+          name: "Show Image Env Vars"
           command: cat image.props
 
 
@@ -155,9 +150,6 @@ workflows:
       - run_unit_tests:
           requires:
             - build
-          filters:
-            branches:
-              only: test
 
       - build_and_catalog_docker_image:
           requires:
