@@ -67,35 +67,28 @@ jobs:
                 echo "HARBOR_ENV=dev" >> harbor.props
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
                 ;;
+              master)
+                echo "HARBOR_ENV=prod2" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_PROD2}" >> harbor.props
+                ;;
+              qa)
+                echo "HARBOR_ENV=qa" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_QA}" >> harbor.props
+                ;;
+              ref)
+                echo "HARBOR_ENV=ref" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_REF}" >> harbor.props
+                ;;
+              staging)
+                echo "HARBOR_ENV=staging" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_STAGING}" >> harbor.props
+                ;;
               test1)
                 echo "HARBOR_ENV=test1" >> harbor.props
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST1}" >> harbor.props
                 ;;
             esac
                 
-#            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-#              echo "HARBOR_ENV=dev" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
-#              echo "HARBOR_ENV=prod2" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_PROD2}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "qa" ]; then
-#              echo "HARBOR_ENV=qa" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_QA}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "ref" ]; then
-#              echo "HARBOR_ENV=ref" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_REF}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-#              echo "HARBOR_ENV=staging" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_STAGING}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "test1" ]; then
-#              echo "HARBOR_ENV=test1" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST1}" >> harbor.props
-#            elif [ "${CIRCLE_BRANCH}" == "test2" ]; then
-#              echo "HARBOR_ENV=test2" >> harbor.props
-#              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST2}" >> harbor.props
-#            fi
-
       - persist_to_workspace:
           root: .
           paths:
@@ -119,10 +112,6 @@ jobs:
       - run:
           name: "List Files (ls -l $(pwd))"
           command: ls -l $(pwd)
-
-      - run:
-          name: "Show harbor.props file"
-          command: cat harbor.props
 
       - run:
           name: "Docker: Login to QUAY"
@@ -160,12 +149,18 @@ jobs:
 
 
       - run:
+          name: "Show harbor.props file"
+          command: cat harbor.props
+
+
+      - run:
           name: "Harbor: Catalog the docker image (into QUAY)"
           command: |
             source image.props
+            source harbor.props
             docker run --env-file image.props quay.io/turner/harbor-deploy catalog \
               --shipment="cnn-cerebro-test" \
-              --environment="private-jczuy" \
+              --environment="${HARBOR_ENV}" \
               --token="${BUILD_TOKEN}"
 
 
@@ -186,12 +181,17 @@ jobs:
           docker_layer_caching: true
 
       - run:
+          name: "Show harbor.props file"
+          command: cat harbor.props
+
+      - run:
           name: "Harbor: Deploy the docker image to Harbor"
           command: |
             source image.props
+            source harbor.props
             docker run --env-file image.props quay.io/turner/harbor-deploy deploy \
               --shipment="cnn-cerebro-test" \
-              --environment="private-jczuy" \
+              --environment="${HARBOR_ENV}" \
               --token="${BUILD_TOKEN}"
 
       - persist_to_workspace:
