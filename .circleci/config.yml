@@ -243,4 +243,5 @@ workflows:
             branches:
               only:
                 - develop
+                - test1
 
