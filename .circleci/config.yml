@@ -62,6 +62,15 @@ jobs:
           name: "Setup Harbor Vars for: ${CIRCLE_BRANCH}"
           command: |
             echo "" > harbor.props
+            case $CIRCLE_BRANCH in
+              develop)
+                echo "HARBOR_ENV=dev" >> harbor.props
+                ;;
+              test1)
+                echo "HARBOR_ENV=test1" >> harbor.props
+                ;;
+            esac
+                
 #            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
 #              echo "HARBOR_ENV=dev" >> harbor.props
 #              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
