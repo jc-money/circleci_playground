@@ -155,7 +155,7 @@ jobs:
 workflows:
   version: 2
 
-  handle_test_branch:
+  TEST_BRANCH:
     jobs:
 
       - build
