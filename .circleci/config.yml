@@ -193,7 +193,7 @@ workflows:
   MAIN_WORKFLOW:
     jobs:
 
-      - checkout_and_test:
+      - checkout_and_test
 
       - setup_to_use_harbor:
           requires:
