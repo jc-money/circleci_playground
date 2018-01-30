@@ -129,6 +129,16 @@ jobs:
               --token="${BUILD_TOKEN}"
 
 
+  deploy_to_harbor:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       - run:
           name: "Harbor: Deploy the docker image to Harbor"
           command: |
@@ -154,6 +164,13 @@ workflows:
       - build_and_catalog_docker_image:
           requires:
             - run_unit_tests
+          filters:
+            branches:
+              only: test
+
+      - deploy_to_harbor:
+          requires:
+            - build_and_catalog_docker_image
           filters:
             branches:
               only: test
