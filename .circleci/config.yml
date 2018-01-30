@@ -56,11 +56,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          # command: npm run test
           command: npm test
-          filters:
-            branches:
-              only: test
 
 
   build_and_catalog_docker_image:
@@ -128,6 +124,11 @@ jobs:
               --environment="private-jczuy" \
               --token="${BUILD_TOKEN}"
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
 
   deploy_to_harbor:
     <<: *defaults
@@ -147,6 +148,11 @@ jobs:
               --shipment="cnn-cerebro-test" \
               --environment="private-jczuy" \
               --token="${BUILD_TOKEN}"
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
 
 workflows:
