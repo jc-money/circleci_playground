@@ -58,6 +58,27 @@ jobs:
       - attach_workspace:
           at: .
 
+                
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
+  build_and_catalog:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: "Export (show env vars)"
+          command: export
+
       - run:
           name: "Create harbor.props file"
           command: |
@@ -88,26 +109,6 @@ jobs:
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_JCZUY}" >> harbor.props
                 ;;
             esac
-                
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-
-  build_and_catalog:
-    <<: *defaults
-
-    steps:
-      - attach_workspace:
-          at: .
-
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      - run:
-          name: "Export (show env vars)"
-          command: export
 
       - run:
           name: "List Files (ls -l $(pwd))"
@@ -133,13 +134,11 @@ jobs:
           name: "Show Image Env Vars"
           command: cat image.props
 
-
       - run:
           name: "Docker: Build Docker Image"
           command: |
             source image.props
             docker build --rm=false -t "${IMAGE}" .
-
 
       - run:
           name: "Docker: Push Docker Image"
@@ -147,11 +146,9 @@ jobs:
             source image.props
             docker push "${IMAGE}"
 
-
       - run:
           name: "Show harbor.props file"
           command: cat harbor.props
-
 
       - run:
           name: "Harbor: Catalog the docker image (into QUAY)"
@@ -162,7 +159,6 @@ jobs:
               --shipment="cnn-cerebro-test" \
               --environment="${HARBOR_ENV}" \
               --token="${BUILD_TOKEN}"
-
 
       - persist_to_workspace:
           root: .
@@ -179,6 +175,10 @@ jobs:
 
       - setup_remote_docker:
           docker_layer_caching: true
+
+      - run:
+          name: "Show Image Env Vars"
+          command: cat image.props
 
       - run:
           name: "Show harbor.props file"
@@ -208,23 +208,9 @@ workflows:
 
       - checkout_and_test
 
-      - setup_to_use_harbor:
-          requires:
-            - checkout_and_test
-          filters:
-            branches:
-              only:
-                - develop
-                - master
-                - qa
-                - ref
-                - staging
-                - test1
-                - test2
-
       - build_and_catalog:
           requires:
-            - setup_to_use_harbor
+            - checkout_and_test
           filters:
             branches:
               only:
@@ -243,5 +229,4 @@ workflows:
             branches:
               only:
                 - develop
-                - test1
 
