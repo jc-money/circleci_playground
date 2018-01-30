@@ -101,7 +101,7 @@ jobs:
             docker run --volumes-from data quay.io/turner/harbor-deploy set_build_values \
               --dir="/data" \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
-              --build_num="${CIRCLE_BUILD_NUM}"
+              --build_num="${CIRCLE_BUILD_NUM}" > image.props
 
       - run:
           name: Show Image Name
@@ -109,12 +109,15 @@ jobs:
 
       - run:
           name: "Harbor: Catalog the docker image (into QUAY)"
-          command: >
-            docker run -v $(pwd):/data quay.io/turner/harbor-deploy catalog \
-              --shipment="mss-${HARBOR_CONTAINER}" \
-              --environment=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
-              --token="${SHIPMENT_BUILD_TOKEN"
-         
+          environment:
+            ENV_NAME: test 
+          command: |
+            source image.props
+            docker run --env-file image.props quay.io/turner/harbor-deploy catalog \
+              --shipment="cnn-cerebro-test" \
+              --environment="private-jczuy" \
+              --token="${BUILD_TOKEN}"
+
 
 workflows:
   version: 2
