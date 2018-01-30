@@ -51,6 +51,53 @@ jobs:
             - .
 
 
+  setup_to_use_harbor:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: "Setup Harbor Vars for: ${CIRCLE_BRANCH}"
+          command: |
+            echo "" > harbor.props
+
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              echo "HARBOR_ENV=dev" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
+
+            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "HARBOR_ENV=prod2" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_PROD2}" >> harbor.props
+
+           elif [ "${CIRCLE_BRANCH}" == "qa" ]; then
+              echo "HARBOR_ENV=qa" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_QA}" >> harbor.props
+
+           elif [ "${CIRCLE_BRANCH}" == "ref" ]; then
+              echo "HARBOR_ENV=ref" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_REF}" >> harbor.props
+
+           elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              echo "HARBOR_ENV=staging" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_STAGING}" >> harbor.props
+
+           elif [ "${CIRCLE_BRANCH}" == "test1" ]; then
+              echo "HARBOR_ENV=test1" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST1}" >> harbor.props
+
+           elif [ "${CIRCLE_BRANCH}" == "test2" ]; then
+              echo "HARBOR_ENV=test2" >> harbor.props
+              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST2}" >> harbor.props
+           fi
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
   build_and_catalog:
     <<: *defaults
 
@@ -113,6 +160,7 @@ jobs:
               --environment="private-jczuy" \
               --token="${BUILD_TOKEN}"
 
+
       - persist_to_workspace:
           root: .
           paths:
@@ -147,24 +195,43 @@ jobs:
 workflows:
   version: 2
 
-  TEST_BRANCH:
+  MAIN_WORKFLOW:
     jobs:
 
       - checkout_and_test:
-          filters:
-            branches:
-              only: test
 
-      - build_and_catalog:
+      - setup_to_use_harbor:
           requires:
             - checkout_and_test
           filters:
             branches:
-              only: test
+              only:
+                - develop
+                - master
+                - qa
+                - ref
+                - staging
+                - test1
+                - test2
+
+      - build_and_catalog:
+          requires:
+            - setup_to_use_harbor
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+                - qa
+                - ref
+                - staging
+                - test1
+                - test2
 
       - deploy_to_harbor:
           requires:
             - build_and_catalog
           filters:
             branches:
-              only: test
+              only:
+                - develop
