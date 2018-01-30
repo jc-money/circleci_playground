@@ -110,12 +110,16 @@ jobs:
 
       - run:
           name: "Docker: Build Docker Image"
-          command: docker build --rm=false -t "${IMAGE}" .
+          command: |
+            source image.props
+            docker build --rm=false -t "${IMAGE}" .
 
 
       - run:
           name: "Docker: Push Docker Image"
-          command: docker push "${IMAGE}"
+          command: |
+            source image.props
+            docker push "${IMAGE}"
 
 
       - run:
