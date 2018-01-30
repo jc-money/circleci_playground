@@ -98,7 +98,7 @@ jobs:
             docker create -v /shared_folder --name data alpine:latest /bin/true
             # copying config file into this volume
             docker cp ./package.json data:/shared_folder
-            docker run --volumes-from sharing_server quay.io/turner/harbor-deploy set_build_values \
+            docker run --volumes-from data quay.io/turner/harbor-deploy set_build_values \
               --dir="/data" \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
               --build_num="${CIRCLE_BUILD_NUM}"
