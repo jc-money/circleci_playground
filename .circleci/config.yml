@@ -9,7 +9,7 @@ version: 2
 jobs:
 
 
-  build:
+  checkout_and_test:
     <<: *defaults
 
     steps:
@@ -37,9 +37,13 @@ jobs:
             echo "NPM version: $(npm --version)"
 
       - run:
-          name: Run Linter
+          name: "Run Linter"
           # command: npm run list
           command: npx eslint ./
+
+      - run:
+          name: "Run Unit Tests"
+          command: npm test
 
       - persist_to_workspace:
           root: .
@@ -47,19 +51,7 @@ jobs:
             - .
 
 
-  run_unit_tests:
-    <<: *defaults
-
-    steps:
-      - attach_workspace:
-          at: .
-
-      - run:
-          name: Run Unit Tests
-          command: npm test
-
-
-  build_and_catalog_docker_image:
+  build_and_catalog:
     <<: *defaults
 
     steps:
@@ -158,22 +150,18 @@ workflows:
   TEST_BRANCH:
     jobs:
 
-      - build
+      - checkout_and_test
 
-      - run_unit_tests:
+      - build_and_catalog:
           requires:
-            - build
-
-      - build_and_catalog_docker_image:
-          requires:
-            - run_unit_tests
+            - checkout_and_test
           filters:
             branches:
               only: test
 
       - deploy_to_harbor:
           requires:
-            - build_and_catalog_docker_image
+            - build_and_catalog
           filters:
             branches:
               only: test
