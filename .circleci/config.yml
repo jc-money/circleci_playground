@@ -109,6 +109,16 @@ jobs:
 
 
       - run:
+          name: "Docker: Build Docker Image"
+          command: docker build --rm=false -t "${IMAGE}" .
+
+
+      - run:
+          name: "Docker: Push Docker Image"
+          command: docker push "${IMAGE}"
+
+
+      - run:
           name: "Harbor: Catalog the docker image (into QUAY)"
           command: |
             source image.props
