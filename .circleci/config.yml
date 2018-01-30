@@ -67,8 +67,6 @@ jobs:
               echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
             fi
 
-
-
 #            elif [ "${CIRCLE_BRANCH}" == "master" ]; then
 #              echo "HARBOR_ENV=prod2" >> harbor.props
 #              echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_PROD2}" >> harbor.props
