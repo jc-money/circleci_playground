@@ -105,6 +105,18 @@ jobs:
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_STAGING}" >> harbor.props
                 ;;
               test1)
+                echo "HARBOR_ENV=private-tbrake" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TBRAKE}" >> harbor.props
+                ;;
+              test2)
+                echo "HARBOR_ENV=private-caechols" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_CAECHOLS}" >> harbor.props
+                ;;
+              test3)
+                echo "HARBOR_ENV=private-njamaleddine" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_NJAMALEDDINE}" >> harbor.props
+                ;;
+              test4)
                 echo "HARBOR_ENV=private-jczuy" >> harbor.props
                 echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_JCZUY}" >> harbor.props
                 ;;
@@ -221,6 +233,8 @@ workflows:
                 - staging
                 - test1
                 - test2
+                - test3
+                - test4
 
       - deploy_to_harbor:
           requires:
