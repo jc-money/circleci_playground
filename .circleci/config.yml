@@ -95,9 +95,9 @@ jobs:
           command: |
             # From: https://circleci.com/docs/2.0/building-docker-images/#mounting-folders
             # creating dummy container which will hold a volume with config
-            docker create -v /shared_folder --name data alpine:latest /bin/true
+            docker create -v /data --name data alpine:latest /bin/true
             # copying config file into this volume
-            docker cp ./package.json data:/shared_folder
+            docker cp ./package.json data:/data
             docker run --volumes-from data quay.io/turner/harbor-deploy set_build_values \
               --dir="/data" \
               --branch=$(echo "${CIRCLE_BRANCH}" | tr "_" "-") \
