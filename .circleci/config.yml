@@ -150,7 +150,10 @@ workflows:
   TEST_BRANCH:
     jobs:
 
-      - checkout_and_test
+      - checkout_and_test:
+          filters:
+            branches:
+              only: test
 
       - build_and_catalog:
           requires:
