@@ -59,15 +59,17 @@ jobs:
           at: .
 
       - run:
-          name: "Setup Harbor Vars for: ${CIRCLE_BRANCH}"
+          name: "Create harbor.props file"
           command: |
             echo "" > harbor.props
             case $CIRCLE_BRANCH in
               develop)
                 echo "HARBOR_ENV=dev" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_DEV}" >> harbor.props
                 ;;
               test1)
                 echo "HARBOR_ENV=test1" >> harbor.props
+                echo "BUILD_TOKEN=${BUILD_TOKEN_FOR_TEST1}" >> harbor.props
                 ;;
             esac
                 
@@ -117,6 +119,10 @@ jobs:
       - run:
           name: "List Files (ls -l $(pwd))"
           command: ls -l $(pwd)
+
+      - run:
+          name: "Show harbor.props file"
+          command: cat harbor.props
 
       - run:
           name: "Docker: Login to QUAY"
