@@ -107,13 +107,22 @@ jobs:
           name: Show Image Name
           command: cat image.props
 
+
       - run:
           name: "Harbor: Catalog the docker image (into QUAY)"
-          environment:
-            ENV_NAME: test 
           command: |
             source image.props
             docker run --env-file image.props quay.io/turner/harbor-deploy catalog \
+              --shipment="cnn-cerebro-test" \
+              --environment="private-jczuy" \
+              --token="${BUILD_TOKEN}"
+
+
+      - run:
+          name: "Harbor: Deploy the docker image to Harbor"
+          command: |
+            source image.props
+            docker run --env-file image.props quay.io/turner/harbor-deploy deploy \
               --shipment="cnn-cerebro-test" \
               --environment="private-jczuy" \
               --token="${BUILD_TOKEN}"
